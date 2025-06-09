@@ -1,12 +1,87 @@
-const AUTHORIZATION = 'Basic b5v43v534uiiyv';
+const MSEC_IN_SEC = 1000;
+const SEC_IN_MIN = 60;
+const MIN_IN_HOUR = 60;
+const HOUR_IN_DAY = 24;
+const MSEC_IN_HOUR = MSEC_IN_SEC * SEC_IN_MIN * MIN_IN_HOUR;
+const MSEC_IN_DAY = MSEC_IN_HOUR * HOUR_IN_DAY;
 
-const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
+const POINTS_COUNT = 5;
+const MAX_PRICE_VALUE = 200;
+const MAX_IMAGES_COUNT = 5;
+
+const AUTH_TOKEN = 'Basic dXNlckBwYXNzd29yZAo=';
+const API_HOST = 'https://21.objects.htmlacademy.pro/big-trip';
+
+const HttpMethod = {
+  GET: 'GET',
+  PUT: 'PUT',
+  POST: 'POST',
+  DELETE: 'DELETE',
+};
+
+const Endpoint = {
+  POINTS: 'points',
+  OFFERS: 'offers',
+  DESTINATIONS: 'destinations',
+};
+
+const EVENT_TYPES = [
+  'taxi',
+  'bus',
+  'train',
+  'ship',
+  'drive',
+  'flight',
+  'check-in',
+  'sightseeing',
+  'restaurant',
+];
+const CITIES = [
+  'Paris',
+  'London',
+  'Chicago',
+  'Tokio',
+  'New York',
+  'Moscow',
+  'Amsterdam',
+  'San-Francisco',
+];
+const DESCRIPTIONS = [
+  'Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt architecto labore atque!',
+  'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatem exercitationem culpa, molestias qui eveniet corrupti?',
+  'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eius, dolorem.',
+  'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit ad eaque cupiditate praesentium maxime.',
+];
+
+const DEFAULT_EVENT_TYPE = 'flight';
+
+const POINT_DUMMY = {
+  basePrice: 0,
+  dateFrom: null,
+  dateTo: null,
+  destination: null,
+  isFavorite: false,
+  offers: [],
+  type: DEFAULT_EVENT_TYPE,
+};
+
+const REQUIRED_POINT_FIELDS = ['dateFrom', 'dateTo', 'destination', 'type', 'basePrice'];
+
+const PointMode = {
+  IDLE: 'IDLE',
+  EDITABLE: 'EDITABLE',
+};
+
+const EditType = {
+  EDITING: 'EDITING',
+  CREATING: 'CREATING',
+};
 
 const FilterType = {
-  EVERYTHING: 'EVERYTHING',
-  FUTURE: 'FUTURE',
-  PRESENT: 'PRESENT',
-  PAST: 'PAST'
+  ANY: 'any',
+  FUTURE: 'future',
+  PRESENT: 'present',
+  PAST: 'past'
 };
 
 const SortType = {
@@ -14,12 +89,69 @@ const SortType = {
   EVENT: 'event',
   TIME: 'time',
   PRICE: 'price',
-  OFFER: 'offer'
+  OFFER: 'offer',
 };
 
-const Mode = {
-  DEFAULT: 'DEFAULT',
-  EDITING: 'EDITING'
+const FilterSettings = {
+  [FilterType.ANY]: {
+    label: 'Everything',
+  },
+  [FilterType.FUTURE]: { label: 'Future' },
+  [FilterType.PRESENT]: { label: 'Present' },
+  [FilterType.PAST]: { label: 'Past' },
+};
+
+const SORTING_COLUMNS = [
+  {
+    type: SortType.DAY,
+    label: 'Day',
+    active: true,
+    defaultSelected: true,
+  },
+  {
+    type: SortType.EVENT,
+    label: 'Event',
+    active: false,
+  },
+  {
+    type: SortType.TIME,
+    label: 'Time',
+    active: true,
+  },
+  {
+    type: SortType.PRICE,
+    label: 'Price',
+    active: true,
+  },
+  {
+    type: SortType.OFFER,
+    label: 'Offer',
+    active: false,
+  },
+];
+
+const DateFormat = {
+  TIME: 'HH:mm',
+  SHORT: 'MMM DD',
+  FULL: 'YYYY-MM-DDTHH:mm',
+  WITH_DELIMITER: 'DD/MM/YY HH:mm',
+  WITH_DELIMITER_FLAT_PICKER: 'd/m/y H:i',
+};
+
+const DurationFormat = {
+  DAYS: 'DD[D] HH[H] mm[M]',
+  HOURS: 'HH[H] mm[M]',
+  MINS: 'mm[M]',
+};
+
+const Price = {
+  MIN: 1,
+  MAX: 500,
+};
+
+const MocksMaxCount = {
+  OFFERS: 7,
+  POINTS: 5,
 };
 
 const UpdateType = {
@@ -27,42 +159,49 @@ const UpdateType = {
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
   INIT: 'INIT',
-  ERROR: 'ERROR'
 };
 
 const UserAction = {
   UPDATE_POINT: 'UPDATE_POINT',
-  ADD_POINT: 'ADD_POINT',
-  DELETE_POINT: 'DELETE_POINT'
+  DELETE_POINT: 'DELETE_POINT',
+  CREATE_POINT: 'CREATE_POINT',
 };
 
-const EmptyListMessage = {
-  EVERYTHING: 'Click New Event to create your first point',
-  FUTURE: 'There are no future events now',
-  PRESENT: 'There are no present events now',
-  PAST: 'There are no past events now'
+const UiBlockerLimit = {
+  LOWER: 250,
+  UPPER: 1000,
 };
 
-const FormType = {
-  CREATE: 'CREATE',
-  EDIT: 'EDIT',
-};
+const DESTINATIONS_NAMES_MAX_COUNT = 3;
 
-const EmptyPoint = {
-  'base_price': 0,
-  'date_from': '',
-  'date_to': '',
-  'destination': '',
-  'is_favorite': false,
-  'offers': [],
-  'type': 'flight'
-};
 
-const Method = {
-  GET: 'GET',
-  POST: 'POST',
-  PUT: 'PUT',
-  DELETE: 'DELETE',
+export {
+  POINTS_COUNT,
+  EVENT_TYPES,
+  MAX_PRICE_VALUE,
+  MAX_IMAGES_COUNT,
+  CITIES,
+  DESCRIPTIONS,
+  SORTING_COLUMNS,
+  POINT_DUMMY,
+  REQUIRED_POINT_FIELDS,
+  PointMode,
+  EditType,
+  FilterType,
+  FilterSettings,
+  SortType,
+  DateFormat,
+  DurationFormat,
+  Price,
+  MocksMaxCount,
+  MSEC_IN_HOUR,
+  MSEC_IN_DAY,
+  UpdateType,
+  AUTH_TOKEN,
+  API_HOST,
+  HttpMethod,
+  Endpoint,
+  UserAction,
+  UiBlockerLimit,
+  DESTINATIONS_NAMES_MAX_COUNT,
 };
-
-export { AUTHORIZATION, END_POINT, FilterType, SortType, Mode, UpdateType, UserAction, EmptyListMessage, FormType, EmptyPoint, Method };
